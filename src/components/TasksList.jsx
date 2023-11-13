@@ -1,97 +1,119 @@
-import { Component } from "react";
+import React, { Component } from "react";
 import TaskItem from "./TaskItem";
 import TodoTaskList from "./TodoTaskList";
 
-class TaskLists extends Component{
-    state = {
-        inputValue: '',
-        tasks: [ ],
-        completedTasks: [],
-      }
-      onChange = (event) => {
-        const value = event.target.value
-        this.setState({
-          inputValue: value
-        })
-      }
+class TaskLists extends Component {
+  state = {
+    inputValue: "",
+    tasks: [],
+    completedTasks: [],
+  };
 
-      addTask = (event) =>{
-        event.preventDefault()
+  onChange = (event) => {
+    const value = event.target.value;
+    this.setState({
+      inputValue: value,
+    });
+  };
 
-        const task = {
-            id: this.state.tasks.length +1,
-            task: this.state.inputValue
-        }
+  addTask = (event) => {
+    event.preventDefault();
 
-        this.setState({
-            tasks: [...this.state.tasks, task],
-            inputValue:''
-        })
+    const task = {
+      id: this.state.tasks.length + 1,
+      task: this.state.inputValue,
+    };
 
-      }
-      
-      deleteTask = (id) => {
-        const updatedTasks = this.state.tasks.filter((task) => task.id !== id);
-        const updatedCompletedTasks = this.state.completedTasks.filter(
-          (task) => task.id !== id
-        );
-        this.setState({
-          tasks: updatedTasks,
-          completedTasks: updatedCompletedTasks,
-        });
-      };
+    this.setState({
+      tasks: [...this.state.tasks, task],
+      inputValue: "", // Clear the input field after adding the task
+    });
+  };
 
-      undoTask = (id) => {
-        const taskToUndo = this.state.completedTasks.find((task) => task.id === id);
-        if (taskToUndo) {
-          const updatedCompletedTasks = this.state.completedTasks.filter(
-            (task) => task.id !== id
-          );
-          this.setState({
-            tasks: [...this.state.tasks, taskToUndo],
-            completedTasks: updatedCompletedTasks,
-          });
-        }
-      };
+  deleteTask = (id) => {
+    const updatedTasks = this.state.tasks.filter((task) => task.id !== id);
+    const updatedCompletedTasks = this.state.completedTasks.filter(
+      (task) => task.id !== id
+    );
+    this.setState({
+      tasks: updatedTasks,
+      completedTasks: updatedCompletedTasks,
+    });
+  };
 
-      completeTask = (id) => {
-        const taskToComplete = this.state.tasks.find((task) => task.id === id);
-        if (taskToComplete) {
-          const updatedTasks = this.state.tasks.filter((task) => task.id !== id);
-          this.setState({
-            id: this.state.tasks.length +1,
-            tasks: updatedTasks,
-            completedTasks: [...this.state.completedTasks, taskToComplete],
-          });
-        }
-      };
+  undoTask = (id) => {
+    const taskToUndo = this.state.completedTasks.find((task) => task.id === id);
+    if (taskToUndo) {
+      const updatedCompletedTasks = this.state.completedTasks.filter(
+        (task) => task.id !== id
+      );
+      this.setState({
+        tasks: [...this.state.tasks, taskToUndo],
+        completedTasks: updatedCompletedTasks,
+      });
+    }
+  };
 
-    
-    render(){
-        return(
-            <div className='App'>
+  completeTask = (id) => {
+    const taskToComplete = this.state.tasks.find((task) => task.id === id);
+    if (taskToComplete) {
+      const updatedTasks = this.state.tasks.filter((task) => task.id !== id);
+      this.setState({
+        id: this.state.tasks.length + 1,
+        tasks: updatedTasks,
+        completedTasks: [...this.state.completedTasks, taskToComplete],
+      });
+    }
+    console.log("sheqmna");
+  };
+
+  render() {
+    return (
+      <div className="App">
         <form onSubmit={this.addTask}>
-            <input type="text" placeholder='enter your task' onChange={this.onChange} value={this.state.inputValue} />
-            <button type='submit'>submit</button>
-          </form>
-          <div className='container'>
-            <div className='firstList'>
+          <input
+            type="text"
+            placeholder="enter your task"
+            onChange={this.onChange}
+            value={this.state.inputValue}
+          />
+          <button type="submit">submit</button>
+        </form>
+        <div className="container">
+          {!document.activeElement.isSameNode(this.inputRef) && ( // Conditionally render only if the input field is not focused
+            <div className="firstList">
               <h2> შესასრულებელი</h2>
               {this.state.tasks.map((tsk) => (
-                <TaskItem key={tsk.id} task ={tsk.task} id ={tsk.id} onComplete={this.completeTask}/>
+                <TaskItem
+                  key={tsk.id}
+                  task={tsk.task}
+                  id={tsk.id}
+                  onComplete={this.completeTask}
+                />
               ))}
             </div>
-            <div className='secondList'>
-              <h2>შესრულებული</h2>
-              {this.state.completedTasks.map((e) => (
-              <TodoTaskList key={e.id} task ={e.task} id ={e.id} action={this.deleteTask} action2={this.undoTask}/>
+          )}
+          <div className="secondList">
+            <h2>შესრულებული</h2>
+            {this.state.completedTasks.map((e) => (
+              <TodoTaskList
+                key={e.id}
+                task={e.task}
+                id={e.id}
+                action={this.deleteTask}
+                action2={this.undoTask}
+              />
             ))}
-  
-            </div>
           </div>
+        </div>
       </div>
-        )
-    }
+    );
+  }
 }
 
-export default TaskLists
+export default TaskLists;
+
+
+
+
+
