@@ -26,7 +26,7 @@ class TaskLists extends Component {
 
     this.setState({
       tasks: [...this.state.tasks, task],
-      inputValue: "", // Clear the input field after adding the task
+      inputValue: "", 
     });
   };
 
@@ -80,7 +80,6 @@ class TaskLists extends Component {
           <button type="submit">submit</button>
         </form>
         <div className="container">
-          {!document.activeElement.isSameNode(this.inputRef) && ( // Conditionally render only if the input field is not focused
             <div className="firstList">
               <h2> შესასრულებელი</h2>
               {this.state.tasks.map((tsk) => (
@@ -92,7 +91,6 @@ class TaskLists extends Component {
                 />
               ))}
             </div>
-          )}
           <div className="secondList">
             <h2>შესრულებული</h2>
             {this.state.completedTasks.map((e) => (
